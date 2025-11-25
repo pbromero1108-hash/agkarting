@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AG KARTING – Proyecto</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d1117;
+      color: #e6edf3;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(90deg, #ff3c00, #ff7f11);
+      padding: 1.5rem;
+      text-align: center;
+      color: white;
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #161b22;
+      padding: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: none;
+      border: 2px solid #ff7f11;
+      color: #ff7f11;
+      margin: 0.3rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    nav button:hover, nav button.active {
+      background-color: #ff7f11;
+      color: #0d1117;
+    }
+
+    section {
+      display: none;
+      padding: 1.5rem;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .ficha {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background-color: #161b22;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 0 10px #000;
+      border: 1px solid #222;
+    }
+
+    .card h3 {
+      color: #ff7f11;
+      margin-bottom: 0.5rem;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #161b22;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .gallery, .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery img, .galeria img {
+      border: 2px solid #ff7f11;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery img:hover, .galeria img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Panel Digital */
+    .panel {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .gauge {
+      position: relative;
+      width: 250px;
+      height: 125px;
+      background: conic-gradient(#ff3c00 0deg, #ff7f11 180deg, #222 180deg);
+      border-radius: 250px 250px 0 0;
+      margin: 2rem auto;
+      border: 3px solid #ff7f11;
+      overflow: hidden;
+    }
+
+    .needle {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      height: 120px;
+      background: #e6edf3;
+      transform-origin: bottom center;
+      transform: rotate(-90deg);
+      transition: transform 0.5s ease;
+    }
+
+    .info {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .input-panel {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .input-panel input {
+      padding: 0.5rem;
+      border: 1px solid #ff7f11;
+      border-radius: 5px;
+      background-color: #161b22;
+      color: #e6edf3;
+    }
+
+    .input-panel button {
+      background-color: #ff7f11;
+      color: #0d1117;
+      border: none;
+      border-radius: 5px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .input-panel button:hover {
+      background-color: #ff3c00;
+    }
+
+    .record {
+      margin-top: 1.5rem;
+      border-top: 1px solid #444;
+      padding-top: 1rem;
+      color: #ccc;
+    }
+  /* ==== PANEL DIGITAL ==== */
+.panel-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dashboard {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.gauge {
+  background-color: #161b22;
+  border: 2px solid #ff3c00;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  width: 100px;
+}
+
+.gauge h4 {
+  color: #ff7f11;
+  font-size: 0.9rem;
+}
+
+.gauge p {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.sim-btn {
+  background-color: #ff3c00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin-top: 0.7rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sim-btn:hover {
+  background-color: #ff7f11;
+}
+
+#resultadoConsumo {
+  margin-top: 0.7rem;
+  color: #ff7f11;
+}
+
+#listaTareas {
+  margin-top: 0.7rem;
+  list-style: none;
+  padding: 0;
+  line-height: 1.7;
+}
+
+#listaTareas li {
+  background-color: #1d242c;
+  border-left: 4px solid #ff3c00;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+}
+  </style>
+</head>
+<body>
+  <header>AG KARTING 🏎️</header>
+
+  <nav>
+    <button class="active" onclick="showSection('inicio')">Inicio</button>
+    <button onclick="showSection('ficha')">Ficha técnica</button>
+    <button onclick="showSection('calculos')">Cálculos</button>
+    <button onclick="showSection('proceso')">Proceso</button>
+    <button onclick="showSection('planos')">Planos</button>
+    <button onclick="showSection('creditos')">Créditos</button>
+    <button onclick="showSection('panel')">Panel Digital</button>
+  </nav>
+
+  <main>
+    <section id="inicio" class="active">
+      <h2>Bienvenido a AG KARTING</h2>
+      <p>
+        Proyecto de karting a explosión construido a partir de un carrito de compras.  
+        Diseñado, modificado y armado de manera artesanal, con el objetivo de combinar reciclaje, ingeniería y pasión por la mecánica.
+      </p>
+      <img src="imagenes_ag_karting/1760551771665 (1).png" alt="AG Karting">
+    </section>
+
+    <section id="ficha">
+      <h2>Ficha técnica</h2>
+      <div class="ficha">
+        <div class="card">
+          <h3>Motor</h3>
+          <p>Motor a explosión monocilíndrico de 4 tiempos, refrigerado por aire, con arranque manual. Utiliza motor Honda Wave 110cc.</p>
+        </div>
+        <div class="card">
+          <h3>Transmisión</h3>
+          <p>Transmisión por cadena con piñón y corona adaptados al chasis del carrito.</p>
+        </div>
+        <div class="card">
+          <h3>Chasis</h3>
+          <p>Estructura reforzada a partir de un carrito de supermercado modificado, soldado y pintado.</p>
+        </div>
+        <div class="card">
+          <h3>Dirección y frenos</h3>
+          <p>Dirección tipo kart, con columna casera y sistema de freno trasero por zapata mecánica.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculos">
+      <h2>Cálculos del Proyecto – Motor Honda Wave 110cc</h2>
+      <div class="ficha">
+        <div class="card">
+          <h3>Torque en la rueda</h3>
+          <p>Trueda = Teng × i × η = 8,5 × 4 × 0,9 = 30,6 N·m</p>
+        </div>
+        <div class="card">
+          <h3>Fuerza de tracción</h3>
+          <p>F = Trueda / r = 30,6 / 0,15 = 204 N</p>
+        </div>
+        <div class="card">
+          <h3>Aceleración teórica</h3>
+          <p>a = F / m = 204 / 100 = 2,04 m/s²</p>
+        </div>
+        <div class="card">
+          <h3>Velocidad máxima</h3>
+          <p>v = (rpm rueda × circunferencia) / 60 ≈ 106 km/h</p>
+        </div>
+      </div>
+    </section>
+
+    <<section id="proceso">
+  <h2>Proceso de Fabricación del AG Karting</h2>
+  <p>El proceso se dividió en cuatro etapas principales: corte y soldadura, montaje del motor, pintura y armado final.</p>
+
+  <!-- CORTE Y SOLDADURA -->
+  <h3>Corte y Soldadura</h3>
+  <div class="galeria">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0013.jpg" alt="Corte y soldadura 1">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0014.jpg" alt="Corte y soldadura 2">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0017.jpg" alt="Corte y soldadura 3">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0020.jpg" alt="Corte y soldadura 4">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0027.jpg" alt="Corte y soldadura 5">
+  </div>
+
+  <!-- MONTAJE DEL MOTOR -->
+  <h3>Montaje del Motor</h3>
+  <div class="galeria">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0016.jpg" alt="Montaje del motor 1">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0023.jpg" alt="Montaje del motor 2">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0024.jpg" alt="Montaje del motor 3">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0025.jpg" alt="Montaje del motor 4">
+  </div>
+
+  <!-- PINTURA -->
+  <h3>Pintura</h3>
+  <div class="galeria">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0015.jpg" alt="Pintura del chasis">
+  </div>
+
+  <!-- ARMADO FINAL -->
+  <h3>Armado Final</h3>
+  <div class="galeria">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0018.jpg" alt="Armado final 1">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0019.jpg" alt="Armado final 2">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0021.jpg" alt="Armado final 3">
+    <img src="imagenes_ag_karting/proceso/IMG-20251125-WA0026.jpg" alt="Armado final 4">
+  </div>
+</section>
+
+    <section id="planos">
+  <h2>Planos del Proyecto</h2>
+  <p>Estos son los planos digitales y renders del AG KARTING, mostrando las distintas vistas y estructuras del diseño.</p>
+  
+  <div class="galeria">
+    <img src="imagenes_ag_karting/IMG-20250925-WA0023.jpg" alt="Vista frontal del AG Karting">
+    <img src="imagenes_ag_karting/IMG-20250925-WA0024.jpg" alt="Vista superior del AG Karting">
+    <img src="imagenes_ag_karting/IMG-20250925-WA0025.jpg" alt="Vista lateral del AG Karting">
+
+    <img src="imagenes_ag_karting/IMG-20251115-WA0070.jpg" alt="Plano técnico 1">
+    <img src="imagenes_ag_karting/IMG-20251115-WA0074.jpg" alt="Plano técnico 2">
+    <img src="imagenes_ag_karting/IMG-20251115-WA0075.jpg" alt="Plano técnico 3">
+    <img src="imagenes_ag_karting/IMG-20251115-WA0076.jpg" alt="Plano técnico 4">
+  </div>
+</section>
+
+    <section id="creditos">
+      <h2>Créditos</h2>
+      <div class="card">
+        <h3>Integrantes</h3>
+        <ul style="list-style:none; padding-left:0;">
+          <li>• ROMERO PABLO</li>
+          <li>• MACHADO LEONARDO</li>
+          <li>• VERA LUCAS</li>
+          <li>• VARGAS JOSÉ</li>
+          <li>• TORRES THIAGO</li>
+          <li>• BENITEZ PABLO</li>
+          <li>• BAYON THOMAS</li>
+          <li>• AYBAR IAGO</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="panel">
+  <h2>Panel Digital – AG KARTING</h2>
+  <p>Simulador de tablero digital y registro de mantenimiento.</p>
+
+  <div class="panel-container">
+
+    <!-- Simulador de Tablero -->
+    <div class="card">
+      <h3>Simulador de Tablero</h3>
+      <div class="dashboard">
+        <div class="gauge">
+          <h4>Velocidad</h4>
+          <p id="speed">0 km/h</p>
+        </div>
+        <div class="gauge">
+          <h4>RPM</h4>
+          <p id="rpm">0</p>
+        </div>
+        <div class="gauge">
+          <h4>Temperatura</h4>
+          <p id="temp">70 °C</p>
+        </div>
+      </div>
+      <button class="sim-btn" onclick="simulate()">▶ Iniciar simulación</button>
+    </div>
+
+    <!-- Cálculo de Consumo -->
+    <div class="card">
+      <h3>Consumo y Huella Ecológica</h3>
+      <p>Ingrese distancia recorrida y consumo promedio para estimar eficiencia.</p>
+      <input type="number" id="distancia" placeholder="Distancia aprox. (km)" />
+      <input type="number" id="consumo" placeholder="tanque en cuartos ( 1.4, 2.4, 3.4, 4.4" />
+      <button class="sim-btn" onclick="calcularConsumo()">Calcular</button>
+      <p id="resultadoConsumo"></p>
+    </div>
+
+    <!-- Registro de Mantenimiento -->
+    <div class="card">
+      <h3>Registro de Mantenimiento</h3>
+      <input type="text" id="tarea" placeholder="Descripción del mantenimiento" />
+      <button class="sim-btn" onclick="agregarTarea()">Agregar</button>
+      <ul id="listaTareas"></ul>
+      
+    </div>
+
+  </div>
+</section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 AG KARTING — Proyecto técnico a explosión ⚙️
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    function updateGauge() {
+      const speedInput = document.getElementById("inputSpeed").value;
+      const needle = document.getElementById("needle");
+      const speedDisplay = document.getElementById("speed");
+      const consumoDisplay = document.getElementById("consumo");
+      const speed = Math.min(Math.max(speedInput, 0), 120);
+      const angle = -90 + (speed / 120) * 180;
+      needle.style.transform = `rotate(${angle}deg)`;
+      speedDisplay.textContent = speed;
+      const consumo = (speed / 30).toFixed(2);
+      consumoDisplay.textContent = consumo;
+    }
+
+    function registrarMantenimiento() {
+      const now = new Date();
+      const fecha = now.toLocaleDateString();
+      document.getElementById("mantenimiento").textContent = fecha;
+    }
+  </script>
+<script>
+  function simulate() {
+    let speed = 0, rpm = 0, temp = 88;
+    const speedEl = document.getElementById("speed");
+    const rpmEl = document.getElementById("rpm");
+    const tempEl = document.getElementById("temp");
+
+    const interval = setInterval(() => {
+      if (speed < 80) {
+        speed += Math.random() * 5;
+        rpm += Math.random() * 350;
+        temp += Math.random() * 0.5;
+      } else {
+        clearInterval(interval);
+      }
+      speedEl.textContent = speed.toFixed(0) + " km/h";
+      rpmEl.textContent = rpm.toFixed(0);
+      tempEl.textContent = temp.toFixed(1) + " °C";
+    }, 200);
+  }
+
+  function calcularConsumo() {
+    const d = parseFloat(document.getElementById("distancia").value);
+    const c = parseFloat(document.getElementById("consumo").value);
+    const res = document.getElementById("resultadoConsumo");
+    if (!d || !c) return res.textContent = "⚠️ Complete ambos campos.";
+    const kmL = d / c;
+    const CO2 = c * 2.31;
+    res.textContent = `Eficiencia: ${kmL.toFixed(1)} km/L — Emisión estimada: ${CO2.toFixed(1)} kg CO₂.`;
+  }
+
+  function agregarTarea() {
+    const tarea = document.getElementById("tarea").value;
+    if (!tarea) return;
+    const li = document.createElement("li");
+    li.textContent = tarea;
+    document.getElementById("listaTareas").appendChild(li);
+    document.getElementById("tarea").value = "";
+  }
+</script>
+</body>
+</html>
